@@ -13,24 +13,12 @@ result = httpclient(mincores, minram, ri, region)
 rows() = Split(result, "#")
 
 For i = LBound(rows) To UBound(rows)
-'cols = Split(rows(i))
 
-'vms(i).Name = cols(1)
-'vms(i).Cores = cols(2)
-'vms(i).Ram = cols(3)
-'vms(i).DiskSize = cols(4)
-'vms(i).HourPrice = cols(6)
-'vms(i).MonthPrice = cols(7)
-'vms(i).YearPrice = cols(8)
 Next i
-
-
-
 
 End Function
 Function getVM(mincores As Integer, minram As Integer, ri As Integer, region As String)
 ' This could be improved
-'MsgBox (result)
 If (result = "") Then
 ' Get new data
 ok = getResult(0, 0, ri, region)
@@ -49,7 +37,6 @@ Next i
 End Function
 Function getVMPriceHour(mincores As Integer, minram As Integer, ri As Integer, region As String)
 ' This could be improved
-'MsgBox (result)
 If (result = "") Then
 ' Get new data
 ok = getResult(0, 0, ri, region)
@@ -84,8 +71,4 @@ End Function
 
 Function processCSV(csvInput As String)
 
-
 End Function
-
-
-
