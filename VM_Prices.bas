@@ -1,4 +1,3 @@
-Attribute VB_Name = "VM_Prices"
 Dim result As String
 Dim query As String
 Dim rows() As String
@@ -16,9 +15,13 @@ For i = LBound(rows) To UBound(rows)
 
 Next i
 
+
+
+
 End Function
 Function getVM(mincores As Integer, minram As Integer, ri As Integer, region As String)
 ' This could be improved
+'MsgBox (result)
 If (result = "") Then
 ' Get new data
 ok = getResult(0, 0, ri, region)
@@ -35,8 +38,10 @@ Exit For
 End If
 Next i
 End Function
-Function getVMPriceHour(mincores As Integer, minram As Integer, ri As Integer, region As String)
+
+Function getVMPriceHour(name As String, ri As Integer, region As String)
 ' This could be improved
+'MsgBox (result)
 If (result = "") Then
 ' Get new data
 ok = getResult(0, 0, ri, region)
@@ -47,7 +52,7 @@ rows() = Split(result, "#")
 For i = LBound(rows) + 1 To UBound(rows)
 
 cols() = Split(rows(i), ";")
-If (cols(1) >= mincores And cols(2) >= minram And cols(4) = ri) Then
+If (cols(0) = name And cols(4) = ri) Then
 
 
 getVMPriceHour = Val(cols(6))
@@ -71,4 +76,8 @@ End Function
 
 Function processCSV(csvInput As String)
 
+
 End Function
+
+
+
