@@ -10,7 +10,7 @@ It uses a custom service for retrieving VM prices
 ![Demoimage](https://github.com/KillerFeature/excelAzureVmPricing/blob/master/Capture2.PNG?raw=true)
 
 # Installation
-1. Download the VM_Prices.bas
+1. Download the ![VM_Prices.bas](https://raw.githubusercontent.com/KillerFeature/excelAzureVmPricing/master/VM_Prices.bas?raw=true)
 2. Open Excel
 3. Press Alt-F11 to go to Macro Editor
 4. Select "File" -> "Import Module"
