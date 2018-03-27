@@ -8,10 +8,10 @@ Dim cols() As String
 
 
 
-Public Function httpclient(mincores As Integer, minram As Integer, region As String)
+Public Function httpclient(mincores As Integer, minram As Integer, region As String, xCurrency)
 Dim xmlhttp As New XMLHTTP60
 Dim myurl As String
-myurl = "http://vmsize.azurewebsites.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&ri=" & ri & "&region=" & region
+myurl = "http://vmsize.azurewebsites.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&ri=" & ri & "&region=" & region & "&currency=" & xCurrency
 xmlhttp.Open "GET", myurl, False
 xmlhttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
 xmlhttp.Send ""
@@ -28,13 +28,13 @@ For i = LBound(responses) To UBound(responses)
 Next i
 
 End Function
-Function findResponse(region As String)
+Function findResponse(region As String, xCurrency As String)
 
 For i = LBound(responses) To UBound(responses)
     'Find Empty response
     If (responses(i) = "") Then
         ' No region match get region
-        tempResponse = httpclient(0, 0, region)
+        tempResponse = httpclient(0, 0, region, xCurrency)
         ok = addResponse(tempResponse, region)
         findResponse = tempResponse
         Exit For
@@ -52,8 +52,8 @@ Next i
 End Function
 
 
-Function getVM(mincores As Integer, minram As Integer, ri As Integer, region As String)
-result = findResponse(region)
+Function getVM(mincores As Integer, minram As Integer, ri As Integer, region As String, xCurrency As String)
+result = findResponse(region, xCurrency)
 Rows() = Split(result, "#")
 For i = LBound(Rows) + 1 To UBound(Rows)
     cols() = Split(Rows(i), ";")
@@ -65,8 +65,8 @@ Next i
 
 End Function
 
-Function getVMPriceHour(name As String, ri As Integer, region As String)
-    result = findResponse(region)
+Function getVMPriceHour(name As String, ri As Integer, region As String, xCurrency As String)
+    result = findResponse(region, xCurrency)
     Rows() = Split(result, "#")
     For i = LBound(Rows) + 1 To UBound(Rows)
         cols() = Split(Rows(i), ";")
