@@ -31,3 +31,11 @@ How to calculate monthly fee?
 
 
 See demovideo here : [video](https://github.com/KillerFeature/excelAzureVmPricing/blob/master/comp.mp4?raw=true)
+
+
+# Known issues
+## Changing currency doesn't work!
+Try to keep your currency identifier in a single cell and reference it. When you change the currency save your workbook, exit excel and reopen the workbook. Refresh your cells.
+
+## I want more that 10 azure regions in one workbook
+NO!!
