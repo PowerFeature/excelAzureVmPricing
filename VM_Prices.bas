@@ -18,16 +18,6 @@ xmlhttp.Send ""
 httpclient = xmlhttp.responseText
 End Function
 
-Function test(region As String)
-
-
-ok = findResponse(region)
-
-
-
-End Function
-
-
 Function addResponse(response As String, region As String)
 For i = LBound(responses) To UBound(responses)
     'Find Empty response
