@@ -7,7 +7,7 @@ You can then pull an hour price for the VM.
 The solution relies on a custom backend, that pulls data from https://azure.microsoft.com/api/v2/pricing
 
 It uses a custom service for retrieving VM prices
-![Demoimage](https://github.com/KillerFeature/excelAzureVmPricing/blob/master/Capture2.PNG?raw=true)
+![Demoimage](https://raw.githubusercontent.com/KillerFeature/excelAzureVmPricing/master/Capture3.PNG)
 
 
 # Installation
