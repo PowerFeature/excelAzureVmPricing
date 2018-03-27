@@ -9,6 +9,7 @@ The solution relies on a custom backend, that pulls data from https://azure.micr
 It uses a custom service for retrieving VM prices
 ![Demoimage](https://github.com/KillerFeature/excelAzureVmPricing/blob/master/Capture2.PNG?raw=true)
 
+
 # Installation
 1. Download the VM_Prices.bas (https://raw.githubusercontent.com/KillerFeature/excelAzureVmPricing/master/VM_Prices.bas?raw=true)
 2. Open Excel
