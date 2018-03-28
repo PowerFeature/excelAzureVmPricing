@@ -5,20 +5,18 @@ Dim xmlhttp As Object
 Dim result As String
 Dim Rows() As String
 Dim cols() As String
-
-
-
 Public Function httpclient(mincores As Integer, minram As Integer, region As String, xCurrency)
 Dim xmlhttp As New XMLHTTP60
 Dim myurl As String
-myurl = "http://vmsize.azurewebsites.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&ri=" & ri & "&region=" & region & "&currency=" & xCurrency
+myurl = "http://vmsize.azurewebsites.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & xCurrency
 xmlhttp.Open "GET", myurl, False
 xmlhttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
 xmlhttp.Send ""
 httpclient = xmlhttp.responseText
 End Function
-
 Function addResponse(response As String, region As String)
+Dim i As Integer
+
 For i = LBound(responses) To UBound(responses)
     'Find Empty response
     If (responses(i) = "") Then
@@ -29,6 +27,7 @@ Next i
 
 End Function
 Function findResponse(region As String, xCurrency As String)
+Dim i As Integer
 
 For i = LBound(responses) To UBound(responses)
     'Find Empty response
@@ -52,19 +51,18 @@ Next i
 End Function
 
 
-Function getVM(mincores As Integer, minram As Integer, ri As Integer, region As String, xCurrency As String)
+Function getVM(mincores As Integer, minram As Integer, ri As Integer, region As String, xCurrency As String, Optional ByVal ex As String = "")
 result = findResponse(region, xCurrency)
 Rows() = Split(result, "#")
 For i = LBound(Rows) + 1 To UBound(Rows)
     cols() = Split(Rows(i), ";")
-    If (cols(1) >= mincores And cols(2) >= minram And cols(4) = ri) Then
+    If (cols(1) >= mincores And cols(2) >= minram And cols(4) = ri And searchKeywords(cols(0), ex) = False) Then
         getVM = cols(0)
         Exit For
     End If
 Next i
 
 End Function
-
 Function getVMPriceHour(name As String, ri As Integer, region As String, xCurrency As String)
     result = findResponse(region, xCurrency)
     Rows() = Split(result, "#")
@@ -75,4 +73,21 @@ Function getVMPriceHour(name As String, ri As Integer, region As String, xCurren
             Exit For
         End If
     Next i
+End Function
+
+Function searchKeywords(name As String, wordlist As String)
+Dim words() As String
+words() = Split(wordlist, ";")
+For i = LBound(words) To UBound(words)
+If (InStr(name, words(i)) > 0) Then
+searchKeywords = True
+Exit For
+End If
+If (i = UBound(words)) Then
+searchKeywords = False
+
+End If
+
+Next i
+
 End Function
