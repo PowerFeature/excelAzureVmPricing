@@ -1,3 +1,5 @@
+
+
 # excelAzureVmPricing
 This VBA project allows you to find the cheapst VM size for a given Core/Ram configuration in a specific datacenter.
 You can then pull an hour price for the VM. 
@@ -24,7 +26,14 @@ It uses a custom service for retrieving VM prices
 
 =getVM([minimum cores];[minimum ram];[reserved instance years 0 or 1 or 3];[azure-region];[currency])
 
+Optionally you can exclude certain vm's by using semicolon seperated tags
+
+=getVM([minimum cores];[minimum ram];[reserved instance years 0 or 1 or 3];[azure-region];[currency];"linux-b")
+This will exclude all burstable VM's
+
 =getVMPriceHour([VM Name (result from getVM)];[reserved instance];[azure region];[currency])
+
+
 
 How to calculate monthly fee?
 =[Hour price]*730
