@@ -4,23 +4,26 @@ Dim tempResponse As String
 Dim xmlhttp As Object
 Dim result As String
 Dim Rows() As String
+Dim Labels() As String
+
 Dim cols() As String
 Public Function httpclient(mincores As Integer, minram As Integer, region As String, xCurrency)
 Dim xmlhttp As New XMLHTTP60
 Dim myurl As String
-myurl = "http://vmsize.azurewebsites.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & xCurrency
+myurl = "http://vmsizecdn.azureedge.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & xCurrency
 xmlhttp.Open "GET", myurl, False
 xmlhttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
 xmlhttp.Send ""
 httpclient = xmlhttp.responseText
 End Function
-Function addResponse(response As String, region As String)
+Function addResponse(response As String, region As String, xCurrency As String)
+
 Dim i As Integer
 
 For i = LBound(responses) To UBound(responses)
     'Find Empty response
     If (responses(i) = "") Then
-        responses(i) = region & "*" & response
+        responses(i) = LCase(region) & LCase(xCurrency) & "*" & response
         Exit For
     End If
 Next i
@@ -34,13 +37,13 @@ For i = LBound(responses) To UBound(responses)
     If (responses(i) = "") Then
         ' No region match get region
         tempResponse = httpclient(0, 0, region, xCurrency)
-        ok = addResponse(tempResponse, region)
+        ok = addResponse(tempResponse, region, xCurrency)
         findResponse = tempResponse
         Exit For
         
     End If
     regionSplit() = Split(responses(i), "*")
-    If (regionSplit(0) = region) Then
+    If (regionSplit(0) = LCase(region) & LCase(xCurrency)) Then
     ' Found region
     findResponse = regionSplit(1)
     Exit For
@@ -74,6 +77,30 @@ Function getVMPriceHour(name As String, ri As Integer, region As String, xCurren
         End If
     Next i
 End Function
+Function getVMData(name As String, region As String, xCurrency As String, ParamName As String)
+result = findResponse(region, xCurrency)
+'Find the param
+Rows() = Split(result, "#")
+Labels() = Split(Rows(0), ";")
+Do
+
+For e = LBound(Labels) To UBound(Labels)
+If (LCase(Labels(e)) = LCase(ParamName)) Then
+' Search through the VM's
+    For i = LBound(Rows) + 1 To UBound(Rows)
+        cols() = Split(Rows(i), ";")
+        If (cols(0) = name) Then
+        getVMData = cols(e)
+        Exit Do
+            
+        End If
+    Next i
+
+End If
+Next e
+Loop While False
+
+End Function
 
 Function searchKeywords(name As String, wordlist As String)
 Dim words() As String
@@ -91,3 +118,4 @@ End If
 Next i
 
 End Function
+
