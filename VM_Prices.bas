@@ -1,4 +1,4 @@
-Dim responses(10) As String
+Dim responses(100) As String
 Dim regionSplit() As String
 Dim tempResponse As String
 Dim xmlhttp As Object
