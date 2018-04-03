@@ -48,8 +48,6 @@ See demovideo here : [video](https://github.com/KillerFeature/excelAzureVmPricin
 
 
 # Known issues
-## Changing currency doesn't work!
-Try to keep your currency identifier in a single cell and reference it. When you change the currency save your workbook, exit excel and reopen the workbook. Refresh your cells.
 
 ## I want more that 10 azure regions in one workbook
 NO!! ... Well yes now you can get 100 :)
