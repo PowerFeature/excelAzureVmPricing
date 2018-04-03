@@ -33,7 +33,12 @@ This will exclude all burstable VM's
 
 =getVMPriceHour([VM Name (result from getVM)];[reserved instance];[azure region];[currency])
 
+=getVMData([VM Name];[Region];[Currency];[Parameter you want returned])
 
+Example:
+=getVMData("linux-b2s-standard";"us-east";"USD";"isVcpu")
+
+Supported parameters : isVCPU cores ram (DO NOT USE getVMData to get prices)
 
 How to calculate monthly fee?
 =[Hour price]*730
@@ -47,4 +52,4 @@ See demovideo here : [video](https://github.com/KillerFeature/excelAzureVmPricin
 Try to keep your currency identifier in a single cell and reference it. When you change the currency save your workbook, exit excel and reopen the workbook. Refresh your cells.
 
 ## I want more that 10 azure regions in one workbook
-NO!!
+NO!! ... Well yes now you can get 100 :)
