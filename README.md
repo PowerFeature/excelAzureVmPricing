@@ -24,12 +24,15 @@ It uses a custom service for retrieving VM prices
 
 # Function syntax
 
-=getVM([minimum cores];[minimum ram];[reserved instance years 0 or 1 or 3];[azure-region];[currency])
+=getVM([minimum cores];[minimum ram];[reserved instance years 0 or 1 or 3];[azure-region];[currency];[OPTIONAL exclude strings seperated by ;];[OPTIONAL must include strings seperated by ;])
 
 Optionally you can exclude certain vm's by using semicolon seperated tags
 
-=getVM([minimum cores];[minimum ram];[reserved instance years 0 or 1 or 3];[azure-region];[currency];"linux-b")
-This will exclude all burstable VM's
+=getVM([minimum cores];[minimum ram];[reserved instance years 0 or 1 or 3];[azure-region];[currency];"-b;-a")
+This will exclude all burstable VM's, and all A series
+
+=getVM([minimum cores];[minimum ram];[reserved instance years 0 or 1 or 3];[azure-region];[currency];"-b;-a";"windows")
+This will exclude all burstable VM's, and all A series and select a windows VM.
 
 =getVMPriceHour([VM Name (result from getVM)];[reserved instance];[azure region];[currency])
 
