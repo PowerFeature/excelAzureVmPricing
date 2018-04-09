@@ -7,50 +7,71 @@ Dim Rows() As String
 Dim Labels() As String
 
 Dim cols() As String
-Public Function httpclient(mincores As Integer, minram As Integer, region As String, xCurrency)
+Public Function httpclient(region As String, xCurrency, Optional ByVal isManagedDisk As Boolean)
 Dim xmlhttp As New XMLHTTP60
-'xmlhttp.setTimeouts 10000, 10000, 10000, 10000
-'xmlhttp.OnTimeOut = OnTimeOutMessage 'callback function
 Dim myurl As String
-myurl = "http://vmsizecdn.azureedge.net/api/values/csv?test=3242&minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & xCurrency
+If (isManagedDisk) Then
+myurl = "http://vmsizecdn.azureedge.net/api/values/csv/mdisks?region=" & region & "&currency=" & xCurrency
+
+Else
+myurl = "http://vmsizecdn.azureedge.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & xCurrency
+
+End If
+
+
 xmlhttp.Open "GET", myurl, False
 xmlhttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
 xmlhttp.Send ""
 httpclient = xmlhttp.responseText
 End Function
+
 Private Function OnTimeOutMessage()
    
     'MsgBox ("Server error: request time-out")
 End Function
 
-Function addResponse(response As String, region As String, xCurrency As String)
+Function addResponse(response As String, region As String, xCurrency As String, Optional ByVal managedDisk As Boolean = False)
 
 Dim i As Integer
-
+    Dim searchString As String
+    If (managedDisk) Then
+    searchString = "MDISK" & LCase(region)
+    Else
+    searchString = LCase(region)
+    End If
+    
 For i = LBound(responses) To UBound(responses)
     'Find Empty response
     If (responses(i) = "") Then
-        responses(i) = LCase(region) & LCase(xCurrency) & "*" & response
+        responses(i) = searchString & LCase(xCurrency) & "*" & response
         Exit For
     End If
 Next i
 
 End Function
-Function findResponse(region As String, xCurrency As String)
+Function findResponse(region As String, xCurrency As String, Optional ByVal managedDisk As Boolean = False)
 Dim i As Integer
 
 For i = LBound(responses) To UBound(responses)
     'Find Empty response
     If (responses(i) = "") Then
         ' No region match get region
-        tempResponse = httpclient(0, 0, region, xCurrency)
-        ok = addResponse(tempResponse, region, xCurrency)
+        tempResponse = httpclient(region, xCurrency, managedDisk)
+        ok = addResponse(tempResponse, region, xCurrency, managedDisk)
         findResponse = tempResponse
         Exit For
         
     End If
     regionSplit() = Split(responses(i), "*")
-    If (regionSplit(0) = LCase(region) & LCase(xCurrency)) Then
+    Dim searchString As String
+    If (managedDisk) Then
+    searchString = "MDISK" & LCase(region)
+    Else
+    searchString = LCase(region)
+    End If
+    
+    
+    If (regionSplit(0) = searchString & LCase(xCurrency)) Then
     ' Found region
     findResponse = regionSplit(1)
     Exit For
@@ -74,8 +95,39 @@ For i = LBound(Rows) + 1 To UBound(Rows)
         Exit For
     End If
 Next i
+End Function
+
+Function getManagedDisk(minSize As Integer, region As String, xCurrency As String, Optional ByVal ex As String = "", Optional ByVal incl As String = "")
+result = findResponse(region, xCurrency, True)
+Rows() = Split(result, vbCrLf)
+For i = LBound(Rows) + 1 To UBound(Rows)
+    cols() = Split(Rows(i), ";")
+    ' nothing in incl
+    If (cols(1) >= minSize And searchKeywords(cols(0), ex) = False And incl = "") Then
+        getManagedDisk = cols(0)
+        Exit For
+    ' something in incl
+    ElseIf (cols(1) >= minSize And searchKeywords(cols(0), ex) = False And incl <> "" And searchKeywords(cols(0), incl) = True) Then
+        getManagedDisk = cols(0)
+        Exit For
+    End If
+Next i
+
 
 End Function
+
+Function getManagedDiskPriceMonth(name As String, region As String, xCurrency As String)
+    result = findResponse(region, xCurrency, True)
+    Rows() = Split(result, vbCrLf)
+    For i = LBound(Rows) + 1 To UBound(Rows)
+        cols() = Split(Rows(i), ";")
+        If (cols(0) = name) Then
+            getManagedDiskPriceMonth = Val(cols(4))
+            Exit For
+        End If
+    Next i
+End Function
+
 Function getVMPriceHour(name As String, ri As Integer, region As String, xCurrency As String)
     result = findResponse(region, xCurrency)
     Rows() = Split(result, vbCrLf)
@@ -87,17 +139,7 @@ Function getVMPriceHour(name As String, ri As Integer, region As String, xCurren
         End If
     Next i
 End Function
-Function getVMPriceHourWin(name As String, ri As Integer, region As String, xCurrency As String)
-    result = findResponse(region, xCurrency)
-    Rows() = Split(result, vbCrLf)
-    For i = LBound(Rows) + 1 To UBound(Rows)
-        cols() = Split(Rows(i), ";")
-        If (cols(0) = name And cols(4) = ri) Then
-            getVMPriceHour = Val(cols(6))
-            Exit For
-        End If
-    Next i
-End Function
+
 Function getVMData(name As String, region As String, xCurrency As String, ParamName As String)
 result = findResponse(region, xCurrency)
 'Find the param
