@@ -54,3 +54,7 @@ See demovideo here : [video](https://github.com/KillerFeature/excelAzureVmPricin
 
 ## I want more that 10 azure regions in one workbook
 NO!! ... Well yes now you can get 100 :)
+
+# Disclaimer
+The is not for quotes. Use this tool at your own risk
+
