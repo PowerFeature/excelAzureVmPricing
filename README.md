@@ -6,7 +6,9 @@ You can then pull an hour price for the VM.
 
 The solution relies on a custom backend, that pulls data from https://azure.microsoft.com/api/v2/pricing
 
-It uses a custom service for retrieving VM prices
+NEW support for managed disks. See the example.xlsm.
+
+
 ![Demoimage](https://raw.githubusercontent.com/KillerFeature/excelAzureVmPricing/master/Capture3.PNG)
 
 
