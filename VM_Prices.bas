@@ -11,10 +11,10 @@ Public Function httpclient(region As String, xCurrency, Optional ByVal isManaged
 Dim xmlhttp As New XMLHTTP60
 Dim myurl As String
 If (isManagedDisk) Then
-myurl = "http://vmsizecdn.azureedge.net/api/values/csv/mdisks?region=" & region & "&currency=" & xCurrency
+myurl = "http://vmsizecdn.azureedge.net/api/values/csv/mdisks?seed=12&region=" & region & "&currency=" & xCurrency
 
 Else
-myurl = "http://vmsizecdn.azureedge.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & xCurrency
+myurl = "http://vmsizecdn.azureedge.net/api/values/csv?seed=12&minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & xCurrency
 
 End If
 
@@ -154,6 +154,30 @@ If (LCase(Labels(e)) = LCase(ParamName)) Then
         cols() = Split(Rows(i), ";")
         If (cols(0) = name) Then
         getVMData = cols(e)
+        Exit Do
+            
+        End If
+    Next i
+
+End If
+Next e
+Loop While False
+
+End Function
+Function getMDiskData(name As String, region As String, xCurrency As String, ParamName As String)
+result = findResponse(region, xCurrency, True)
+'Find the param
+Rows() = Split(result, vbCrLf)
+Labels() = Split(Rows(0), ";")
+Do
+
+For e = LBound(Labels) To UBound(Labels)
+If (LCase(Labels(e)) = LCase(ParamName)) Then
+' Search through the VM's
+    For i = LBound(Rows) + 1 To UBound(Rows)
+        cols() = Split(Rows(i), ";")
+        If (cols(0) = name) Then
+        getMDiskData = cols(e)
         Exit Do
             
         End If
