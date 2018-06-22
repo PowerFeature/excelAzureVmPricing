@@ -56,5 +56,6 @@ See demovideo here : [video](https://github.com/KillerFeature/excelAzureVmPricin
 NO!! ... Well yes now you can get 100 :)
 
 # Disclaimer
-The is not for quotes. Use this tool at your own risk
+The is not for quotes. Use this tool at your own risk. Prices are cached for 48 hours and might be outdated.
+This is an expert tool. A fool with a tool is still a fool. 
 
