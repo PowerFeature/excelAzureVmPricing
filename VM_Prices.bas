@@ -11,10 +11,10 @@ Public Function httpclient(region As String, CurrencyID, Optional ByVal isManage
 Dim xmlhttp As New XMLHTTP60
 Dim myurl As String
 If (isManagedDisk) Then
-myurl = "http://vmsizecdn.azureedge.net/api/values/csv/mdisks?seed=12&region=" & region & "&currency=" & CurrencyID
+myurl = "https://vmsizeacdn.azureedge.net/api/values/csv/mdisks?seed=20&region=" & region & "&currency=" & CurrencyID
 
 Else
-myurl = "http://vmsizecdn.azureedge.net/api/values/csv?seed=12&minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & CurrencyID
+myurl = "https://vmsizeacdn.azureedge.net/api/values/csv?seed=20&minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & CurrencyID
 
 End If
 
@@ -82,15 +82,25 @@ Next i
 End Function
 
 
-Function getVM(mincores As Integer, minram As Integer, ri As Integer, region As String, CurrencyID As String, Optional ByVal excludeKeywords As String = "", Optional ByVal includeKeywords As String = "")
+Function getVM(mincores As Integer, minram As Integer, reservedInstanceYears As Integer, region As String, CurrencyID As String, Optional ByVal excludeKeywords As String = "", Optional ByVal includeKeywords As String = "")
 result = findResponse(region, CurrencyID)
 Rows() = Split(result, vbCrLf)
 For i = LBound(Rows) + 1 To UBound(Rows)
     cols() = Split(Rows(i), ";")
-    If (cols(1) >= mincores And cols(2) >= minram And cols(4) = ri And searchKeywords(cols(0), excludeKeywords) = False And includeKeywords = "") Then
+    If (cols(1) >= mincores And cols(2) >= minram And cols(4) = reservedInstanceYears And searchKeywords(cols(0), excludeKeywords) = False And includeKeywords = "") Then
+        If (cols(13) = "True") Then
+            Application.Caller.Font.ColorIndex = 3
+        Else
+            Application.Caller.Font.ColorIndex = 1
+        End If
         getVM = cols(0)
         Exit For
-    ElseIf (cols(1) >= mincores And cols(2) >= minram And cols(4) = ri And searchKeywords(cols(0), excludeKeywords) = False And includeKeywords <> "" And searchKeywords(cols(0), includeKeywords) = True) Then
+    ElseIf (cols(1) >= mincores And cols(2) >= minram And cols(4) = reservedInstanceYears And searchKeywords(cols(0), excludeKeywords) = False And includeKeywords <> "" And searchKeywords(cols(0), includeKeywords) = True) Then
+        If (cols(13) = "True") Then
+            Application.Caller.Font.ColorIndex = 3
+        Else
+            Application.Caller.Font.ColorIndex = 1
+        End If
         getVM = cols(0)
         Exit For
     End If
@@ -104,10 +114,20 @@ For i = LBound(Rows) + 1 To UBound(Rows)
     cols() = Split(Rows(i), ";")
     ' nothing in includeKeywords
     If (cols(1) >= minSize And searchKeywords(cols(0), excludeKeywords) = False And includeKeywords = "") Then
+        If (cols(12) = "True") Then
+            Application.Caller.Font.ColorIndex = 3
+        Else
+            Application.Caller.Font.ColorIndex = 1
+        End If
         getManagedDisk = cols(0)
         Exit For
     ' something in includeKeywords
     ElseIf (cols(1) >= minSize And searchKeywords(cols(0), excludeKeywords) = False And includeKeywords <> "" And searchKeywords(cols(0), includeKeywords) = True) Then
+        If (cols(12) = "True") Then
+            Application.Caller.Font.ColorIndex = 3
+        Else
+            Application.Caller.Font.ColorIndex = 1
+        End If
         getManagedDisk = cols(0)
         Exit For
     End If
@@ -122,18 +142,28 @@ Function getManagedDiskPriceMonth(name As String, region As String, CurrencyID A
     For i = LBound(Rows) + 1 To UBound(Rows)
         cols() = Split(Rows(i), ";")
         If (cols(0) = name) Then
+                If (cols(12) = "True") Then
+            Application.Caller.Font.ColorIndex = 3
+        Else
+            Application.Caller.Font.ColorIndex = 1
+        End If
             getManagedDiskPriceMonth = Val(cols(4))
             Exit For
         End If
     Next i
 End Function
 
-Function getVMPriceHour(name As String, ri As Integer, region As String, CurrencyID As String)
+Function getVMPriceHour(name As String, reservedInstanceYears As Integer, region As String, CurrencyID As String)
     result = findResponse(region, CurrencyID)
     Rows() = Split(result, vbCrLf)
     For i = LBound(Rows) + 1 To UBound(Rows)
         cols() = Split(Rows(i), ";")
-        If (cols(0) = name And cols(4) = ri) Then
+        If (cols(0) = name And cols(4) = reservedInstanceYears) Then
+        If (cols(13) = "True") Then
+            Application.Caller.Font.ColorIndex = 3
+        Else
+            Application.Caller.Font.ColorIndex = 1
+        End If
             getVMPriceHour = Val(cols(6))
             Exit For
         End If
@@ -205,5 +235,3 @@ End If
 Next i
 
 End Function
-
-
