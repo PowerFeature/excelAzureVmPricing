@@ -11,10 +11,10 @@ Public Function httpclient(region As String, CurrencyID, Optional ByVal isManage
 Dim xmlhttp As New XMLHTTP60
 Dim myurl As String
 If (isManagedDisk) Then
-myurl = "https://vmsizeCDNv.azureedge.net/api/values/csv/mdisks?seed=21&region=" & region & "&currency=" & CurrencyID
+myurl = "https://vmsizeCDNv.azureedge.net/api/values/csv/mdisks?region=" & region & "&currency=" & CurrencyID
 
 Else
-myurl = "https://vmsizeCDNv.azureedge.net/api/values/csv?seed=21&minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & CurrencyID
+myurl = "https://vmsizeCDNv.azureedge.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & CurrencyID
 
 End If
 
@@ -163,8 +163,11 @@ Function getVMPriceHour(name As String, reservedInstanceYears As Integer, region
             Application.Caller.Font.ColorIndex = 3
         Else
             Application.Caller.Font.ColorIndex = 1
+            
         End If
-            getVMPriceHour = Val(cols(6))
+
+        getVMPriceHour = Val(cols(6))
+
             Exit For
         End If
     Next i
@@ -235,6 +238,4 @@ End If
 Next i
 
 End Function
-
-
 
