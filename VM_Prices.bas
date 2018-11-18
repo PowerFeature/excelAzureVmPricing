@@ -11,10 +11,10 @@ Public Function httpclient(region As String, CurrencyID, Optional ByVal isManage
 Dim xmlhttp As New XMLHTTP60
 Dim myurl As String
 If (isManagedDisk) Then
-myurl = "https://vmsizeCDNv.azureedge.net/api/values/csv/mdisks?region=" & region & "&currency=" & CurrencyID
+myurl = "https://vmsizeCDNv.azureedge.net/api/values/csv/mdisks?region=" & LCase(region) & "&currency=" & LCase(CurrencyID)
 
 Else
-myurl = "https://vmsizeCDNv.azureedge.net/api/values/csv?minCores=" & mincores & "&minRam=" & minram & "&region=" & region & "&currency=" & CurrencyID
+myurl = "https://vmsizeCDNv.azureedge.net/api/values/csv?region=" & LCase(region) & "&currency=" & LCase(CurrencyID)
 
 End If
 
@@ -238,4 +238,3 @@ End If
 Next i
 
 End Function
-
