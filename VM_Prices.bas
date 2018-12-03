@@ -39,12 +39,18 @@ Dim i As Integer
     Else
     searchString = LCase(region)
     End If
-    
 For i = LBound(responses) To UBound(responses)
     'Find Empty response
+        If (i = UBound(responses)) Then
+            MsgBox ("Out of Memory. Too many requests")
+            Erase responses
+            Exit For
+        End If
     If (responses(i) = "") Then
         responses(i) = searchString & LCase(CurrencyID) & "*" & response
+        
         Exit For
+
     End If
 Next i
 
